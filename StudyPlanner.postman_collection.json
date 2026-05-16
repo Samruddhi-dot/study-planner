@@ -1,0 +1,106 @@
+{
+  "info": {
+    "name": "Study Planner API",
+    "description": "Test all endpoints for the Study Planner app",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "BASE_URL", "value": "http://localhost:3000", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "1. GET All Tasks",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": { "raw": "{{BASE_URL}}/tasks", "host": ["{{BASE_URL}}"], "path": ["tasks"] }
+      }
+    },
+    {
+      "name": "2. GET Tasks filtered by Pending",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{BASE_URL}}/tasks?status=Pending",
+          "host": ["{{BASE_URL}}"],
+          "path": ["tasks"],
+          "query": [{ "key": "status", "value": "Pending" }]
+        }
+      }
+    },
+    {
+      "name": "3. GET Tasks filtered by High Priority",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{BASE_URL}}/tasks?priority=High",
+          "host": ["{{BASE_URL}}"],
+          "path": ["tasks"],
+          "query": [{ "key": "priority", "value": "High" }]
+        }
+      }
+    },
+    {
+      "name": "4. GET Tasks: Done + High Priority (combined filter)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{BASE_URL}}/tasks?status=Done&priority=High",
+          "host": ["{{BASE_URL}}"],
+          "path": ["tasks"],
+          "query": [
+            { "key": "status", "value": "Done" },
+            { "key": "priority", "value": "High" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "5. POST Create New Task",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"subject\": \"Mathematics\",\n  \"title\": \"Practice differentiation problems\",\n  \"deadline\": \"2025-06-15\",\n  \"priority\": \"High\"\n}"
+        },
+        "url": { "raw": "{{BASE_URL}}/tasks", "host": ["{{BASE_URL}}"], "path": ["tasks"] }
+      }
+    },
+    {
+      "name": "6. PUT Mark Task as Done (replace 1 with real ID)",
+      "request": {
+        "method": "PUT",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"status\": \"Done\"\n}"
+        },
+        "url": { "raw": "{{BASE_URL}}/tasks/1", "host": ["{{BASE_URL}}"], "path": ["tasks", "1"] }
+      }
+    },
+    {
+      "name": "7. PUT Update Priority (replace 1 with real ID)",
+      "request": {
+        "method": "PUT",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"priority\": \"Low\"\n}"
+        },
+        "url": { "raw": "{{BASE_URL}}/tasks/1", "host": ["{{BASE_URL}}"], "path": ["tasks", "1"] }
+      }
+    },
+    {
+      "name": "8. DELETE Task (replace 1 with real ID)",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": { "raw": "{{BASE_URL}}/tasks/1", "host": ["{{BASE_URL}}"], "path": ["tasks", "1"] }
+      }
+    }
+  ]
+}
