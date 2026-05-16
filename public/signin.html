@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StudyFlow — Sign In</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink: #1a1710; --ink-2: #4a473d; --ink-3: #8a8778;
+      --paper: #faf9f6; --paper-2: #f2f0ea; --paper-3: #e8e4db;
+      --gold: #c8963c; --gold-lt: #f5e6cc;
+      --teal: #2a7d6b; --teal-lt: #d4ede8;
+      --red: #c0392b; --red-lt: #fae5e3;
+      --green: #2e7d52; --green-lt: #d9f0e4;
+      --border: rgba(26,23,16,0.12);
+      --radius: 14px; --radius-sm: 8px;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--paper);
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      background-image: radial-gradient(ellipse at 0% 0%, #e8e2d4 0%, transparent 50%),
+                        radial-gradient(ellipse at 100% 100%, #dde8e4 0%, transparent 50%);
+    }
+
+    /* ── LEFT PANEL ── */
+    .left-panel {
+      background: var(--ink);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 3rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .left-panel::before {
+      content: '';
+      position: absolute;
+      width: 400px; height: 400px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(200,150,60,0.15), transparent 70%);
+      top: -100px; left: -100px;
+    }
+
+    .left-panel::after {
+      content: '';
+      position: absolute;
+      width: 300px; height: 300px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(42,125,107,0.12), transparent 70%);
+      bottom: -80px; right: -80px;
+    }
+
+    .lp-logo {
+      display: flex; align-items: center; gap: 10px; position: relative; z-index: 1;
+    }
+
+    .lp-logo-icon { color: var(--gold); font-size: 24px; }
+    .lp-logo-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px; font-weight: 900; color: #faf9f6;
+    }
+
+    .lp-hero { position: relative; z-index: 1; }
+    .lp-headline {
+      font-family: 'Playfair Display', serif;
+      font-size: 42px; font-weight: 900;
+      color: #faf9f6; line-height: 1.15;
+      margin-bottom: 1.25rem;
+    }
+
+    .lp-headline span { color: var(--gold); }
+
+    .lp-desc {
+      font-size: 16px; color: rgba(245,243,238,0.55);
+      line-height: 1.7; max-width: 380px;
+    }
+
+    .lp-features {
+      display: flex; flex-direction: column; gap: 12px;
+      position: relative; z-index: 1;
+    }
+
+    .lp-feature {
+      display: flex; align-items: center; gap: 12px;
+    }
+
+    .lp-feature-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--gold); flex-shrink: 0;
+    }
+
+    .lp-feature span { font-size: 14px; color: rgba(245,243,238,0.6); }
+
+    /* ── RIGHT PANEL ── */
+    .right-panel {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 2rem;
+    }
+
+    .auth-box {
+      width: 100%; max-width: 420px;
+    }
+
+    .auth-tabs {
+      display: flex;
+      background: var(--paper-2);
+      border-radius: 100px;
+      padding: 4px;
+      margin-bottom: 2rem;
+      border: 1px solid var(--border);
+    }
+
+    .auth-tab {
+      flex: 1; padding: 10px;
+      border-radius: 100px; border: none;
+      background: transparent;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px; font-weight: 500;
+      color: var(--ink-3); cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .auth-tab.active {
+      background: white;
+      color: var(--ink);
+      font-weight: 600;
+      box-shadow: 0 1px 6px rgba(26,23,16,0.1);
+    }
+
+    .auth-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px; font-weight: 700;
+      color: var(--ink); margin-bottom: 6px;
+    }
+
+    .auth-subtitle {
+      font-size: 14px; color: var(--ink-3);
+      margin-bottom: 1.75rem;
+    }
+
+    .field { margin-bottom: 1rem; }
+
+    .field label {
+      display: block;
+      font-size: 11px; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.08em;
+      color: var(--ink-3); margin-bottom: 6px;
+    }
+
+    .field input {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: white;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px; color: var(--ink);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .field input:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(200,150,60,0.12);
+    }
+
+    .field input::placeholder { color: var(--ink-3); }
+
+    .btn-primary {
+      width: 100%; padding: 13px;
+      background: var(--ink); border: none;
+      border-radius: var(--radius-sm);
+      color: #faf9f6;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px; font-weight: 600;
+      cursor: pointer; margin-top: 4px;
+      transition: all 0.2s;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+
+    .btn-primary:hover { background: #2d2b25; transform: translateY(-1px); }
+    .btn-primary:active { transform: translateY(0); }
+    .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+    .divider {
+      display: flex; align-items: center; gap: 12px;
+      margin: 1.5rem 0;
+      color: var(--ink-3); font-size: 12px;
+    }
+
+    .divider::before, .divider::after {
+      content: ''; flex: 1;
+      height: 1px; background: var(--border);
+    }
+
+    .btn-google {
+      width: 100%; padding: 12px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px; font-weight: 500;
+      color: var(--ink); cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      transition: all 0.2s;
+    }
+
+    .btn-google:hover { background: var(--paper-2); border-color: var(--paper-3); }
+
+    .google-icon {
+      width: 18px; height: 18px;
+    }
+
+    .msg {
+      margin-top: 1rem;
+      padding: 11px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 13px; text-align: center;
+    }
+
+    .msg.error   { background: var(--red-lt);   color: var(--red); }
+    .msg.success { background: var(--green-lt);  color: var(--green); }
+    .hidden { display: none !important; }
+
+    .terms {
+      text-align: center;
+      font-size: 12px; color: var(--ink-3);
+      margin-top: 1.25rem;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      body { grid-template-columns: 1fr; }
+      .left-panel { display: none; }
+      .right-panel { padding: 2rem 1.25rem; align-items: flex-start; padding-top: 3rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- LEFT PANEL -->
+  <div class="left-panel">
+    <div class="lp-logo">
+      <span class="lp-logo-icon">✦</span>
+      <span class="lp-logo-text">StudyFlow</span>
+    </div>
+
+    <div class="lp-hero">
+      <h1 class="lp-headline">Study smarter,<br /><span>not harder.</span></h1>
+      <p class="lp-desc">Organize your study tasks, track deadlines, and stay on top of your priorities — all in one beautiful place.</p>
+    </div>
+
+    <div class="lp-features">
+      <div class="lp-feature">
+        <div class="lp-feature-dot"></div>
+        <span>Add tasks with subject, deadline & priority</span>
+      </div>
+      <div class="lp-feature">
+        <div class="lp-feature-dot"></div>
+        <span>Filter by status or priority instantly</span>
+      </div>
+      <div class="lp-feature">
+        <div class="lp-feature-dot"></div>
+        <span>Your tasks, your account — fully private</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="right-panel">
+    <div class="auth-box">
+
+      <!-- Tab switcher -->
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="tab-login" onclick="switchTab('login')">Sign In</button>
+        <button class="auth-tab" id="tab-signup" onclick="switchTab('signup')">Create Account</button>
+      </div>
+
+      <!-- Dynamic title -->
+      <h2 class="auth-title" id="auth-title">Welcome back</h2>
+      <p class="auth-subtitle" id="auth-subtitle">Sign in to access your study tasks</p>
+
+      <!-- Email field -->
+      <div class="field">
+        <label>Email address</label>
+        <input type="email" id="email" placeholder="you@example.com" />
+      </div>
+
+      <!-- Password field -->
+      <div class="field">
+        <label>Password</label>
+        <input type="password" id="password" placeholder="Min. 6 characters" />
+      </div>
+
+      <!-- Submit button -->
+      <button class="btn-primary" id="auth-btn" onclick="handleAuth()">
+        <span id="btn-label">Sign In</span>
+        <span id="btn-arrow">→</span>
+      </button>
+
+      <!-- Message -->
+      <div id="auth-msg" class="msg hidden"></div>
+
+      <!-- Divider -->
+      <div class="divider">or continue with</div>
+
+      <!-- Google button -->
+      <button class="btn-google" onclick="handleGoogle()">
+        <!-- Google "G" SVG icon -->
+        <svg class="google-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+          <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+          <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
+          <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+        </svg>
+        Continue with Google
+      </button>
+
+      <p class="terms">By continuing, you agree to StudyFlow's terms of service.</p>
+    </div>
+  </div>
+
+  <script>
+    // ─────────────────────────────────────────────────────────
+    // TAB SWITCHING
+    // ─────────────────────────────────────────────────────────
+    let currentMode = 'login';
+
+    function switchTab(mode) {
+      currentMode = mode;
+      document.getElementById('tab-login').classList.toggle('active', mode === 'login');
+      document.getElementById('tab-signup').classList.toggle('active', mode === 'signup');
+
+      if (mode === 'login') {
+        document.getElementById('auth-title').textContent    = 'Welcome back';
+        document.getElementById('auth-subtitle').textContent = 'Sign in to access your study tasks';
+        document.getElementById('btn-label').textContent     = 'Sign In';
+      } else {
+        document.getElementById('auth-title').textContent    = 'Create account';
+        document.getElementById('auth-subtitle').textContent = 'Start organizing your studies today';
+        document.getElementById('btn-label').textContent     = 'Create Account';
+      }
+
+      hideMsg();
+    }
+
+    // ─────────────────────────────────────────────────────────
+    // SHOW MESSAGE
+    // ─────────────────────────────────────────────────────────
+    function showMsg(text, type = 'error') {
+      const el = document.getElementById('auth-msg');
+      el.textContent = text;
+      el.className = `msg ${type}`;
+      el.classList.remove('hidden');
+    }
+
+    function hideMsg() {
+      document.getElementById('auth-msg').classList.add('hidden');
+    }
+
+    // ─────────────────────────────────────────────────────────
+    // HANDLE EMAIL/PASSWORD AUTH
+    // ─────────────────────────────────────────────────────────
+    async function handleAuth() {
+      const email    = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const btn      = document.getElementById('auth-btn');
+
+      if (!email || !password) {
+        showMsg('Please enter your email and password.');
+        return;
+      }
+
+      btn.disabled = true;
+      document.getElementById('btn-label').textContent = 'Please wait...';
+      document.getElementById('btn-arrow').textContent = '⏳';
+
+      try {
+        const endpoint = currentMode === 'login' ? '/auth/login' : '/auth/signup';
+        const res  = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+        const data = await res.json();
+
+        if (!data.success) throw new Error(data.message);
+
+        if (currentMode === 'signup') {
+          showMsg('Account created! Check your email to confirm, then sign in.', 'success');
+          switchTab('login');
+        } else {
+          // Save token and user info to localStorage
+          localStorage.setItem('sf_token', data.token);
+          localStorage.setItem('sf_user',  JSON.stringify(data.user));
+          // Redirect to main app
+          window.location.href = '/';
+        }
+
+      } catch (err) {
+        showMsg(err.message || 'Something went wrong. Try again.');
+      } finally {
+        btn.disabled = false;
+        document.getElementById('btn-label').textContent = currentMode === 'login' ? 'Sign In' : 'Create Account';
+        document.getElementById('btn-arrow').textContent = '→';
+      }
+    }
+
+    // ─────────────────────────────────────────────────────────
+    // HANDLE GOOGLE OAUTH
+    // ─────────────────────────────────────────────────────────
+    async function handleGoogle() {
+      try {
+        const res  = await fetch('/auth/google');
+        const data = await res.json();
+        if (!data.success) throw new Error(data.message);
+        // Redirect user to Google's login page
+        window.location.href = data.url;
+      } catch (err) {
+        showMsg('Google login failed. Try again.');
+      }
+    }
+
+    // ─────────────────────────────────────────────────────────
+    // ENTER KEY SUPPORT
+    // ─────────────────────────────────────────────────────────
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Enter') handleAuth();
+    });
+
+    // If already logged in, redirect to app
+    if (localStorage.getItem('sf_token')) {
+      window.location.href = '/';
+    }
+  </script>
+</body>
+</html>
